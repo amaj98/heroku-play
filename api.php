@@ -13,27 +13,39 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    //this is a sample query which gets some data, the order by part shuffles the results
-    //the limit 0, 10 takes the first 10 results.
-    // you might want to consider taking more results, implementing "pagination", 
-    // ordering by rank, etc.
-    $query = "SELECT rack FROM racks WHERE length=7 and weight <= 10 order by random() limit 1";
-    
-    //this next line could actually be used to provide user_given input to the query to 
-    //avoid SQL injection attacks
-    $statement = $dbhandle->prepare($query);
-    $statement->execute();
-    
-    //The results of the query are typically many rows of data
-    //there are several ways of getting the data out, iterating row by row,
-    //I chose to get associative arrays inside of a big array
-    //this will naturally create a pleasant array of JSON data when I echo in a couple lines
-    $results = $statement->fetch(PDO::FETCH_ASSOC);
-    echo json_encode($results);
+        //this is a sample query which gets some data, the order by part shuffles the results
+        //the limit 0, 10 takes the first 10 results.
+        // you might want to consider taking more results, implementing "pagination", 
+        // ordering by rank, etc.
+        $query = "SELECT rack FROM racks WHERE length=7 and weight <= 10 order by random() limit 1";
+        
+        //this next line could actually be used to provide user_given input to the query to 
+        //avoid SQL injection attacks
+        $statement = $dbhandle->prepare($query);
+        $statement->execute();
+        
+        //The results of the query are typically many rows of data
+        //there are several ways of getting the data out, iterating row by row,
+        //I chose to get associative arrays inside of a big array
+        //this will naturally create a pleasant array of JSON data when I echo in a couple lines
+        $results = $statement->fetch(PDO::FETCH_ASSOC);
+        echo json_encode($results);
     }
     
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        echo('asdasda');
+        $combos = json_decode($_POST["words"]);
+        
+        $words = array();
+        
+        foreach ($combos as $value) {
+            $query = "SELECT words FROM racks WHERE rack = '$value'"
+            $statement = $dbhandle->prepare($query);
+            $statement->execute();
+            $raw = $statement->fetch(PDO::FETCH_ASSOC);
+            $words = array_merge($words,explode("@@",$raw));
+        }
+
+        echo json_encode($words);
     }
 
 ?>
