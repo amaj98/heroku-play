@@ -31,5 +31,9 @@
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($results);
     }
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        echo('asdasda');
+    }
 
 ?>
