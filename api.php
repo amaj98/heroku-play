@@ -23,6 +23,7 @@
     //avoid SQL injection attacks
     $statement = $dbhandle->prepare($query);
     $statement->execute();
+    echo(json_encode('abcd'))
     
     //The results of the query are typically many rows of data
     //there are several ways of getting the data out, iterating row by row,
