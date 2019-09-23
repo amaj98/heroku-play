@@ -42,7 +42,7 @@
 
         $("#bingos").html('');
 
-        racks.map(rack=>{
+        [racks].map(rack=>{
 
           $("#bingos").append(`<li>${rack.rack}: <span class="answer hidden">${rack.words}</span></li>`);
 
